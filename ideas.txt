@@ -1,0 +1,7 @@
+- Rock paper scissors command //
+- warn command //
+- report command 
+- something happens after a lot of reports and warnings
+- staff log //
+- Staff log embeds
+- tempban
