@@ -7,6 +7,8 @@ const gameScores = require('../../gameScores.json');
 const reports = require('../../reports.json');
 const reputation = require('../../reputation.json');
 
+const files = {'botConfig.json': botConfig, 'gameScores.json': gameScores, 'reports.json': reports, 'reputation.json': reputation};
+
 class FetchDataCommand extends commando.Command
 {
     constructor(client)
@@ -21,22 +23,17 @@ class FetchDataCommand extends commando.Command
 
     async run(message, args)
     {
-        var gsData = JSON.stringify(gameScores, null, 2);
-        var bcData = JSON.stringify(botConfig, null, 2);
-        var reportsData = JSON.stringify(reports, null, 2);
-        var reputationData = JSON.stringify(reputation, null, 2);
-
-        if(args == "botConfig.json") message.channel.sendCode('json', bcData)
-        else if(args == "gameScores.json") message.channel.sendCode('json', gsData)
-        else if(args == "reports.json") message.channel.sendCode('json', reportsData)
-        else if(args == "reputation.json") message.channel.sendCode('json', reputationData)
+        
+        if(files[args]) message.channel.sendCode('json', JSON.stringify(files[args], null, 2))
+        
         else if(args == "*")
         {
-            message.channel.sendCode('json', bcData);
-            message.channel.sendCode('json', gsData);
-            message.channel.sendCode('json', reportsData);
-            message.channel.sendCode('json', reputationData);
+            message.channel.sendCode('json', JSON.stringify(botConfig, null, 2));
+            message.channel.sendCode('json', JSON.stringify(gameScores, null, 2));
+            message.channel.sendCode('json', JSON.stringify(reports, null, 2));
+            message.channel.sendCode('json', JSON.stringify(reputation, null, 2));
         }
+        
         else message.channel.send("Please type a file's name to display it's contents or a \"*\" to display the contents of all files.");
     }
 }
