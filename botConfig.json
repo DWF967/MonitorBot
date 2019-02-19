@@ -4,8 +4,11 @@
         "staff_log": "staff-log"
     },
     "roles": {
-        "admin": [
-            "Owner"
-        ]
+        "default": "Member",
+        "mute": "Muted",
+        "faction_one": "Time Lord",
+        "faction_two": "Dalek",
+        "faction_three": "Mondasian",
+        "admin": "Owner"
     }
 }

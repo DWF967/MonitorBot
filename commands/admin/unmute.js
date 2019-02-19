@@ -4,15 +4,15 @@ const path = require('path')
 
 const botConfig = require('../../botConfig.json');
 
-class BanCommand extends commando.Command
+class UnmuteCommand extends commando.Command
 {
     constructor(client)
     {
         super(client,{
-            name: 'ban',
+            name: 'unmute',
             group: 'admin',
-            memberName: 'ban',
-            description: 'Bans a user from the guild.'
+            memberName: 'unmute',
+            description: 'Unmutes a user in the guild.'
         })
     }
 
@@ -28,11 +28,13 @@ class BanCommand extends commando.Command
 
         let words = args.split(' ');
         let reason = words.slice(1).join(' ');
+
+        let muteRole = botConfig["roles"].mute;
         
         let embed = new discord.RichEmbed()
-            .setTitle("**__Ban__**")
-            .setColor("0xFF0000")
-            .addField("**" + targetUser.user.username + "**", "Banned from the server by " + "***" + message.author.username + "***" + " for " + reason + ".", false)
+            .setTitle("**__Unmute__**")
+            .setColor("0xff00ff")
+            .addField("**" + targetUser.user.username + "**", "Unmuted by " + "***" + message.author.username + "***" + " for " + reason + ".", false)
             .setThumbnail(targetUser.user.avatarURL)
             .setFooter(message.author.username, message.author.avatarURL)
             .setTimestamp(Date());
@@ -43,7 +45,7 @@ class BanCommand extends commando.Command
           return;
         }
         
-        message.guild.member(targetUser).ban(reason)
+        message.guild.member(targetUser).removeRole(targetUser.guild.roles.find(role => role.name === muteRole))
             .then(console.log)
             .catch(console.error);
 
@@ -53,4 +55,4 @@ class BanCommand extends commando.Command
     }
 }
 
-module.exports = BanCommand;
+module.exports = UnmuteCommand;

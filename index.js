@@ -40,9 +40,9 @@ global.globalFunctions = {
 */
 function setMemberFaction(member)
 {
-    let factionOne = member.guild.roles.find(role => role.name === "Time Lord");
-    let factionTwo = member.guild.roles.find(role => role.name === "Dalek");
-    let factionThree = member.guild.roles.find(role => role.name === "Mondasian");
+    let factionOne = member.guild.roles.find(role => role.name === botConfig["roles"].faction_one);
+    let factionTwo = member.guild.roles.find(role => role.name === botConfig["roles"].faction_two);
+    let factionThree = member.guild.roles.find(role => role.name === botConfig["roles"].faction_three);
 
     let chance = Math.floor(Math.random() * 3);
 
@@ -76,7 +76,7 @@ bot.on('guildMemberAdd', function(member)
 {
     member.send("Welcome to the server! Hope you enjoy your stay!");
 
-    let memberRole = member.guild.roles.find(role => role.name === "Member");
+    let memberRole = member.guild.roles.find(role => role.name === botConfig["roles"].default);
     member.addRole(memberRole);
 
     setMemberFaction(member);
