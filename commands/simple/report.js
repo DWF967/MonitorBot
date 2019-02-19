@@ -21,16 +21,17 @@ class ReportCommand extends commando.Command
     {
         let targetUser = message.guild.member(message.mentions.users.first());
 
-        let words = args.split(' ');
-        let reason = words.slice(1).join(' ');
-
-        let id = targetUser.id;
-
         if(!targetUser)
         {
             message.channel.send("Sorry, I couldn't find that user.");
             return;
         }
+
+        let words = args.split(' ');
+        let reason = words.slice(1).join(' ');
+
+        let id = targetUser.id;
+
         if(reason == "")
         {
             message.channel.send("Please provide a reason for the warning.")
@@ -56,7 +57,7 @@ class ReportCommand extends commando.Command
 
         let staffLog = message.member.guild.channels.find(channel => channel.name === botConfig["channels"].staff_log);
 
-        staffLog.send(targetUser + " has been warned for " + reason);
+        staffLog.send(targetUser + " has been reported for " + reason);
     }
 }
 

@@ -1,4 +1,5 @@
 const commando = require('discord.js-commando');
+const discord = require('discord.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -21,16 +22,25 @@ class WarnCommand extends commando.Command
     {
         let targetUser = message.guild.member(message.mentions.users.first());
 
-        let words = args.split(' ');
-        let reason = words.slice(1).join(' ');
-
-        let id = targetUser.id;
-
         if(!targetUser)
         {
             message.channel.send("Sorry, I couldn't find that user.");
             return;
         }
+
+        let words = args.split(' ');
+        let reason = words.slice(1).join(' ');
+
+        let id = targetUser.id;
+
+        let embed = new discord.RichEmbed()
+            .setTitle("**__Warning__**")
+            .setColor("0xffa500")
+            .addField("**" + targetUser.user.username + "**", "Warned by " + message.author.username + " for " + reason + ".", false)
+            .setThumbnail(targetUser.user.avatarURL)
+            .setFooter(message.author.username, message.author.avatarURL)
+            .setTimestamp(Date());
+
         if(!message.member.hasPermission('MANAGE_MESSAGES'))
         {
           message.channel.send("You don't have permission to use that command!");
@@ -61,7 +71,8 @@ class WarnCommand extends commando.Command
 
         let staffLog = message.member.guild.channels.find(channel => channel.name === botConfig["channels"].staff_log);
 
-        staffLog.send(targetUser + " has been warned for " + reason);
+        staffLog.send(embed);
+        targetUser.send(targetUser + ", you have been warned for " + "**\"" +  reason + "\"**" + " in the guild " + "**\"" + targetUser.guild.name + "\"**" + ". Please refrain from doing that.")
     }
 }
 

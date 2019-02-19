@@ -20,6 +20,12 @@ class BanCommand extends commando.Command
     {
         let targetUser = message.guild.member(message.mentions.users.first());
 
+        if(!targetUser)
+        {
+            message.channel.send("Sorry, I couldn't find that user.");
+            return;
+        }
+
         let words = args.split(' ');
         let reason = words.slice(1).join(' ');
         
@@ -31,11 +37,6 @@ class BanCommand extends commando.Command
             .setFooter(message.author.username, message.author.avatarURL)
             .setTimestamp(Date());
 
-        if(!targetUser)
-        {
-            message.channel.send("Sorry, I couldn't find that user.");
-            return;
-        }
         if(!message.member.hasPermission('MANAGE_MESSAGES'))
         {
           message.channel.send("You don't have permission to use that command!");

@@ -23,7 +23,12 @@ class FetchDataCommand extends commando.Command
 
     async run(message, args)
     {
-        
+        if(!message.member.hasPermission('ADMINISTRATOR'))
+        {
+          message.channel.send("You don't have permission to use that command!");
+          return;
+        }
+
         if(files[args]) message.channel.sendCode('json', JSON.stringify(files[args], null, 2))
         
         else if(args == "*")
