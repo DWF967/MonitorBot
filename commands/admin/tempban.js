@@ -4,15 +4,15 @@ const path = require('path')
 
 const botConfig = require('../../botConfig.json');
 
-class TempmuteCommand extends commando.Command
+class BanCommand extends commando.Command
 {
     constructor(client)
     {
         super(client,{
-            name: 'tempmute',
+            name: 'tempban',
             group: 'admin',
-            memberName: 'tempmute',
-            description: 'Temporarily mutes a user in the guild for a specified amount of hours.'
+            memberName: 'tempban',
+            description: 'Temporarily bans a user from the guild.'
         })
     }
 
@@ -31,43 +31,41 @@ class TempmuteCommand extends commando.Command
 
         if(isNaN(time))
         {
-            message.channel.send(time + " is NaN. Please say the number of hours you want to mute that person.");
+            message.channel.send(time + " is NaN. Please say the number of days you want to ban that person.");
             return;
         }
-
-        let muteRole = botConfig["roles"].mute;
         
         let embed = new discord.RichEmbed()
-            .setTitle("**__Tempmute__**")
-            .setColor("0xd515d5")
-            .addField("**" + targetUser.user.username + "**", "Tempmuted by " + "***" + message.author.username + "***" + " for " + time + " hour(s).", false)
+            .setTitle("**__Tempban__**")
+            .setColor("0x04f896")
+            .addField("**" + targetUser.user.username + "**", "Temporarily from the server by " + "***" + message.author.username + "***" + " for " + time + " day(s).", false)
             .setThumbnail(targetUser.user.avatarURL)
             .setFooter(message.author.username, message.author.avatarURL)
             .setTimestamp(Date());
-        
+
         if(!message.member.hasPermission('MANAGE_MESSAGES'))
         {
           message.channel.send("You don't have permission to use that command!");
           return;
         }
         
-        message.guild.member(targetUser).addRole(targetUser.guild.roles.find(role => role.name === muteRole))
+        message.guild.member(targetUser).ban()
             .then(console.log)
             .catch(console.error);
 
-        let muteTime = time * 3600000;
+        let banTime = time * 86400000;
 
         setTimeout(() => {
-            targetUser.removeRole(targetUser.guild.roles.find(role => role.name === muteRole));
-
+            message.guild.unban(targetUser.id)
+    
             let embed = new discord.RichEmbed()
-                .setTitle("**__Unmute__**")
+                .setTitle("**__Unban__**")
                 .setColor("0xd515d5")
-                .addField("**" + targetUser.user.username + "**", "Has been unmuted because his time is up.", false)
+                .addField("**" + targetUser.user.username + "**", "Has been unbanned because his time is up.", false)
                 .setTimestamp(Date());
-            
+                
             staffLog.send(embed);
-        }, muteTime);
+        }, banTime);
 
         let staffLog = message.member.guild.channels.find(channel => channel.name === botConfig["channels"].staff_log);
 
@@ -75,4 +73,4 @@ class TempmuteCommand extends commando.Command
     }
 }
 
-module.exports = TempmuteCommand;
+module.exports = BanCommand;

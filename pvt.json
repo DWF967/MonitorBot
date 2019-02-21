@@ -1,3 +1,7 @@
 {
-  "subscriber_count": {}
+  "votes": {
+    "pewdiepie": 0,
+    "tseries": 0
+  },
+  "users_voted": {}
 }

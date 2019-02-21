@@ -33,7 +33,7 @@ class InfoAboutMeCommand extends commando.Command
             },
             {
                 "name": "**__Commands__**",
-                "value": "If you want to get a list of all of my commands, type **!help** and I will DM you alist of my commands!",
+                "value": "If you want to get a list of all of my commands, type **!help** and I will DM you the list!",
                 "inline": false
             }
             ],

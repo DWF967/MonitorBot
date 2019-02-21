@@ -6,8 +6,9 @@ const botConfig = require('../../botConfig.json');
 const gameScores = require('../../gameScores.json');
 const reports = require('../../reports.json');
 const reputation = require('../../reputation.json');
+const pvt = require('../../pvt.json');
 
-const files = {'botConfig.json': botConfig, 'gameScores.json': gameScores, 'reports.json': reports, 'reputation.json': reputation};
+const files = {'botConfig.json': botConfig, 'gameScores.json': gameScores, 'reports.json': reports, 'reputation.json': reputation, 'pvt.json': pvt};
 
 class FetchDataCommand extends commando.Command
 {
@@ -37,6 +38,7 @@ class FetchDataCommand extends commando.Command
             message.channel.sendCode('json', JSON.stringify(gameScores, null, 2));
             message.channel.sendCode('json', JSON.stringify(reports, null, 2));
             message.channel.sendCode('json', JSON.stringify(reputation, null, 2));
+            message.channel.sendCode('json', JSON.stringify(pvt, null, 2));
         }
         
         else message.channel.send("Please type a file's name to display it's contents or a \"*\" to display the contents of all files.");

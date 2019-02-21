@@ -14,7 +14,6 @@ global.document = document;
 const $ = jQuery = require('jquery')(window);
 
 const botConfig = require(__dirname + '/botConfig.json');
-const pvtJson = require(__dirname + '/pvt.json');
 
 global.bot = bot;
 
@@ -47,20 +46,17 @@ global.globalFunctions = {
     getChannelData: function (channel)
     {
         var ytApiUrl = 'https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=' + channel + '&key=' + KEY;
+        var subsVar;
     
         $.ajaxSetup({
             async: false
         });
 
         $.getJSON(ytApiUrl, function(result){
-            pvtJson["subscriber_count"][channel] = +result['items'][0]['statistics'].subscriberCount;
-            globalFunctions.stringifyFile('pvt.json', pvtJson, false, '', true);
-        });        
-
-        setTimeout(() => {
-            pvtJson['subscriber_count'] = {};
-            globalFunctions.stringifyFile('pvt.json', pvtJson, false, '', true);
-        }, 10000);
+           subsVar = +result['items'][0]['statistics'].subscriberCount;
+        });    
+        
+        return subsVar;
     }
 }
 
