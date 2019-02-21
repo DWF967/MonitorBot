@@ -40,7 +40,7 @@ class TempmuteCommand extends commando.Command
         let embed = new discord.RichEmbed()
             .setTitle("**__Tempmute__**")
             .setColor("0xd515d5")
-            .addField("**" + targetUser.user.username + "**", "Tempmuted by " + "***" + message.author.username + "***" + " for " + time + " hours.", false)
+            .addField("**" + targetUser.user.username + "**", "Tempmuted by " + "***" + message.author.username + "***" + " for " + time + " hour(s).", false)
             .setThumbnail(targetUser.user.avatarURL)
             .setFooter(message.author.username, message.author.avatarURL)
             .setTimestamp(Date());

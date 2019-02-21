@@ -2,9 +2,19 @@ const Commando = require('discord.js-commando');
 const Discord = require('discord.js');
 const fs = require('fs');
 const bot = new Commando.Client();
+const KEY = process.env.yt_api_key;
 const TOKEN = process.env.token;
 
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM();
+const { document } = (new JSDOM('')).window;
+global.document = document;
+
+const $ = jQuery = require('jquery')(window);
+
 const botConfig = require(__dirname + '/botConfig.json');
+const pvtJson = require(__dirname + '/pvt.json');
 
 global.bot = bot;
 
@@ -16,6 +26,7 @@ bot.registry.registerGroup('music', 'Music');
 bot.registry.registerGroup('team', 'Team');
 bot.registry.registerGroup('game', 'Game');
 bot.registry.registerGroup('admin', 'Admin');
+bot.registry.registerGroup('pvt', 'PvT');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + '/commands');
 
@@ -31,6 +42,25 @@ global.globalFunctions = {
             if(err) throw err;
             if(logBool == true) console.log(logString);
         });
+    },
+
+    getChannelData: function (channel)
+    {
+        var ytApiUrl = 'https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=' + channel + '&key=' + KEY;
+    
+        $.ajaxSetup({
+            async: false
+        });
+
+        $.getJSON(ytApiUrl, function(result){
+            pvtJson["subscriber_count"][channel] = +result['items'][0]['statistics'].subscriberCount;
+            globalFunctions.stringifyFile('pvt.json', pvtJson, false, '', true);
+        });        
+
+        setTimeout(() => {
+            pvtJson['subscriber_count'] = {};
+            globalFunctions.stringifyFile('pvt.json', pvtJson, false, '', true);
+        }, 10000);
     }
 }
 
